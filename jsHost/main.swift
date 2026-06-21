@@ -1,4 +1,4 @@
-import Foundation
+import jsUI
 
 let runtime = JSRuntime()
 
