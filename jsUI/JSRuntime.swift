@@ -1,11 +1,11 @@
 import JavaScriptCore
 
-final class JSRuntime {
+public final class JSRuntime {
 
     let virtualMachine = JSVirtualMachine()
     let context: JSContext
 
-    init() {
+    public init() {
         self.context = JSContext(virtualMachine: virtualMachine)
 
         context.exceptionHandler = self.handleException
@@ -25,7 +25,7 @@ final class JSRuntime {
         exit(1)
     }
 
-    func run(script: String) {
+    public func run(script: String) {
         context.evaluateScript(script)
     }
 
