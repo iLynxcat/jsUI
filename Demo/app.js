@@ -16,4 +16,5 @@ function getCountString(count) {
     return `${count} press${count == 1 ? '' : 'es'}`
 }
 
+App.quitsWhenAllWindowsClosed = true
 App.run()
