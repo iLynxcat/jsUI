@@ -8,8 +8,12 @@ button.enabled = true
 let count = 0
 button.onClick = () => {
     count++;
-    window.showAlert(`Hello (${count} presses)`, "Press again to increment.");
-    button.text = `${count} presses`;
+    window.showAlert(`Hello (${getCountString(count)})`, "Press again to increment.");
+    button.text = getCountString(count);
+}
+
+function getCountString(count) {
+    return `${count} press${count == 1 ? '' : 'es'}`
 }
 
 App.run()
