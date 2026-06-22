@@ -5,7 +5,10 @@ import JavaScriptCore
 	func makeButton() -> Button
     func activate() -> Void
     func center() -> Void
-    func showAlert(_ title: String, _ description: String) -> Void
+    
+    func presentInfo(_ description: String, _ title: String?) -> Void
+    func presentWarning(_ description: String, _ title: String?) -> Void
+    func presentError(_ description: String, _ title: String?) -> Void
 }
 
 @objc final class Window: NSObject {
@@ -23,6 +26,14 @@ import JavaScriptCore
         
         activate()
 	}
+    
+    private func makeAlert(info: String, title: String, style: NSAlert.Style) -> NSAlert {
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = info
+        alert.alertStyle = style
+        return alert
+    }
 }
 
 extension Window: WindowJSExport {
@@ -40,11 +51,18 @@ extension Window: WindowJSExport {
         nsWindow.center()
     }
     
-    func showAlert(_ title: String, _ description: String) {
-        let alert = NSAlert()
-        alert.messageText = title
-        alert.informativeText = description
-        alert.alertStyle = .warning
+    func presentInfo(_ description: String, _ title: String?) {
+        let alert = makeAlert(info: description, title: title ?? "Heads up!", style: .informational)
+        alert.beginSheetModal(for: nsWindow)
+    }
+
+    func presentWarning(_ description: String, _ title: String?) {
+        let alert = makeAlert(info: description, title: title ?? "Warning!", style: .warning)
+        alert.beginSheetModal(for: nsWindow)
+    }
+    
+    func presentError(_ description: String, _ title: String?) {
+        let alert = makeAlert(info: description, title: title ?? "An error occurred", style: .critical)
         alert.beginSheetModal(for: nsWindow)
     }
 }
