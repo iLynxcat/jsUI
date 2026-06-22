@@ -2,39 +2,36 @@
 
 import PackageDescription
 
+let swiftSettings: [SwiftSetting] = [
+    .enableUpcomingFeature("ApproachableConcurrency")
+]
+
 let package = Package(
     name: "jsUI",
     platforms: [
         .macOS(.v14)
     ],
     products: [
-        .library(
-            name: "jsUI",
-            targets: ["jsUI"]
-        ),
-        .executable(
-            name: "jsHost",
-            targets: ["jsHost"],
-        ),
+        .library(name: "jsUI", targets: ["jsUI"]),
+        .executable(name: "jsHost", targets: ["jsHost"]),
+        .executable(name: "Demo", targets: ["Demo"]),
     ],
     targets: [
         .target(
             name: "jsUI",
-            path: "jsUI",
-            swiftSettings: [
-                .defaultIsolation(MainActor.self),
-                .enableUpcomingFeature("ApproachableConcurrency"),
-            ],
+            swiftSettings: swiftSettings + [.defaultIsolation(MainActor.self)],
         ),
         .executableTarget(
             name: "jsHost",
-            dependencies: [
-                .target(name: "jsUI")
-            ],
-            path: "jsHost",
-            swiftSettings: [
-                .enableUpcomingFeature("ApproachableConcurrency")
-            ],
+            dependencies: ["jsUI"],
+            swiftSettings: swiftSettings,
+        ),
+        .executableTarget(
+            name: "Demo",
+            dependencies: ["jsUI"],
+            path: "Demo",
+            resources: [.process("app.js")],
+            swiftSettings: swiftSettings,
         ),
     ],
     swiftLanguageModes: [.v6],
