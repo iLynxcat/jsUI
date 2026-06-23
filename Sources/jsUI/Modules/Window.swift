@@ -13,6 +13,10 @@ import JavaScriptCore
 
 @objc final class Window: NSObject {
 	let nsWindow: NSWindow
+    
+    // TODO: remove this. for debugging only, for now
+    // - allows us to automatically stack buttons for Demo
+    let stackView: NSStackView
 
 	init(titled title: String, width: Double, height: Double) {
 		nsWindow = NSWindow(
@@ -22,7 +26,19 @@ import JavaScriptCore
 			styleMask: [.titled, .closable],
 			backing: .buffered,
 			defer: false)
-		super.init()
+        
+        stackView = NSStackView()
+        stackView.orientation = .vertical
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        nsWindow.contentView!.addSubview(stackView)
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: nsWindow.contentView!.topAnchor, constant: 20),
+            stackView.leadingAnchor.constraint(equalTo: nsWindow.contentView!.leadingAnchor, constant: 20)
+        ])
+        
+        super.init()
         
         activate()
 	}
@@ -39,7 +55,8 @@ import JavaScriptCore
 extension Window: WindowJSExport {
     func makeButton() -> Button {
         let button = Button()
-        nsWindow.contentView!.addSubview(button.nsButton)
+        stackView.addArrangedSubview(button.nsButton)
+
         return button
     }
     
