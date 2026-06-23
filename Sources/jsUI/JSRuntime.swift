@@ -11,7 +11,8 @@ public final class JSRuntime {
         context.exceptionHandler = self.handleException
 
         let modules: [JSModule.Type] = [
-            App.self
+            App.self,
+            Console.self,
         ]
         modules.forEach { mod in
             mod.install(in: context)
