@@ -4,7 +4,7 @@ const window = App.makeWindow("Hello from JS!", 640, 480)
 window.center()
 
 const button = window.makeButton()
-button.text = `0 presses`
+button.text = getCountString(0)
 button.enabled = true
 
 let count = 0
